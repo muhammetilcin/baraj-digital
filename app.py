@@ -6,9 +6,9 @@ st.set_page_config(page_title="Tahtalı Barajı Dijital İkiz", layout="wide")
 st.title("🌊 Tahtalı Barajı Dijital Su İkizi")
 st.markdown("### *Zaman Serisi Analiz Paneli*")
 
-# --- VERİ SETİ (GEE'den Düzeltilmiş Veriler) ---
+# --- VERİ SETİ (SIRALAMA HATASI DÜZELTİLMİŞ) ---
 zaman_verisi = pd.DataFrame({
-    'Tarih': ['05 Ocak', '25 Ocak', '15 Şubat', '05 Mart', '03 Nisan'],
+    'Tarih': pd.to_datetime(['2026-01-05', '2026-01-25', '2026-02-15', '2026-03-05', '2026-04-03']),
     'Alan_km2': [6.50, 7.20, 8.80, 10.15, 12.08]
 })
 
@@ -28,14 +28,13 @@ st.divider()
 col_left, col_right = st.columns([1.5, 1])
 
 with col_left:
-    st.subheader("📈 2026 Doluluk Serüveni (Ocak - Nisan)")
-    # Çizgi grafik oluşturuyoruz
+    st.subheader("📈 2026 Doluluk Serüveni (Kronolojik)")
+    # set_index('Tarih') yapınca artık tarihler doğru sıralanacak
     st.line_chart(data=zaman_verisi.set_index('Tarih'), color="#0077b6")
-    st.write("**Analiz:** Şubat ayındaki ekstrem yağışların ardından baraj yüzey alanında lineer bir artış gözlenmiştir.")
+    st.write("**Analiz:** Grafik artık zaman akışına (Ocak -> Nisan) göre doğru sıralanmıştır.")
 
 with col_right:
     st.subheader("🛰️ Güncel Uydu Analizi")
     st.image("analiz.jpg", use_container_width=True)
 
-# --- ALT BİLGİ ---
-st.info("Bu panel Sentinel-2 uydusundan haftalık olarak çekilen NDWI (Normalleştirilmiş Fark Su Endeksi) verileriyle güncellenmektedir.")
+st.info("Veri Notu: Ocak başından bugüne kadar baraj yüzey alanındaki değişim %85'lik bir artış trendi göstermektedir.")
